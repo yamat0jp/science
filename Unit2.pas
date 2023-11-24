@@ -55,7 +55,7 @@ implementation
 uses System.Generics.Defaults, Math;
 
 const
-  param = 0.8;
+  param = 2.0;
 
 procedure TForm2.aboutSort(ls: TList<TItem>);
 begin
@@ -90,8 +90,10 @@ end;
 
 procedure TForm2.Action2Execute(Sender: TObject);
 begin
-  event(3);
-  aboutSort(list);
+  repeat
+    event(3);
+    aboutSort(list);
+  until list[0].last = 1000;
 end;
 
 procedure TForm2.Action3Execute(Sender: TObject);
@@ -147,7 +149,7 @@ var
   item: TItem;
 begin
   list := TList<TItem>.Create;
-  for var i := 1 to 1000 do
+  for var i := 1 to 10000 do
     list.Add(item);
   Canvas.Pen.Width := 1;
   Action1Execute(Sender);
@@ -234,7 +236,7 @@ end;
 
 procedure TForm2.sadness(var item: TItem);
 begin
-  item.last := item.last / 2;
+  item.last := item.last / param;
 end;
 
 end.

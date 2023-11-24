@@ -45,6 +45,8 @@ object Form2: TForm2
     Align = alRight
     Caption = 'Panel1'
     TabOrder = 1
+    ExplicitLeft = 892
+    ExplicitHeight = 416
     object ListBox1: TListBox
       Left = 81
       Top = 1
@@ -54,9 +56,7 @@ object Form2: TForm2
       ItemHeight = 15
       TabOrder = 0
       OnClick = ListBox1Click
-      ExplicitLeft = 978
-      ExplicitTop = 25
-      ExplicitHeight = 417
+      ExplicitHeight = 414
     end
     object ListBox2: TListBox
       Left = 1
@@ -66,8 +66,7 @@ object Form2: TForm2
       Align = alClient
       ItemHeight = 15
       TabOrder = 1
-      ExplicitLeft = 0
-      ExplicitWidth = 51
+      ExplicitHeight = 414
     end
   end
   object ActionManager1: TActionManager
@@ -105,6 +104,7 @@ object Form2: TForm2
       Category = 'menu'
       AutoCheck = True
       Caption = 'Listbox'
+      Checked = True
       OnExecute = Action3Execute
     end
   end
