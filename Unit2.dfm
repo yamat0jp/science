@@ -66,6 +66,7 @@ object Form2: TForm2
       Align = alClient
       ItemHeight = 15
       TabOrder = 1
+      OnClick = ListBox2Click
       ExplicitHeight = 414
     end
   end
@@ -75,7 +76,6 @@ object Form2: TForm2
         Items = <
           item
             Action = Action1
-            Caption = 'S&tart'
           end
           item
             Action = Action2
