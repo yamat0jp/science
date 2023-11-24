@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{86266545-7609-494E-84B0-5C5CA2BF0E89}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="sci.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="graph.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="sci">
+        <MSBuild Projects="sci.dproj"/>
+    </Target>
+    <Target Name="sci:Clean">
+        <MSBuild Projects="sci.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="sci:Make">
+        <MSBuild Projects="sci.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="graph">
+        <MSBuild Projects="graph.dproj"/>
+    </Target>
+    <Target Name="graph:Clean">
+        <MSBuild Projects="graph.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="graph:Make">
+        <MSBuild Projects="graph.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="sci;graph"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="sci:Clean;graph:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="sci:Make;graph:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
