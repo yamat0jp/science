@@ -53,7 +53,9 @@ object Form2: TForm2
       Width = 133
       Height = 415
       Align = alRight
+      DoubleBuffered = False
       ItemHeight = 15
+      ParentDoubleBuffered = False
       TabOrder = 0
       OnClick = ListBox1Click
       ExplicitHeight = 414
@@ -64,7 +66,9 @@ object Form2: TForm2
       Width = 80
       Height = 415
       Align = alClient
+      DoubleBuffered = False
       ItemHeight = 15
+      ParentDoubleBuffered = False
       TabOrder = 1
       OnClick = ListBox2Click
       ExplicitHeight = 414
@@ -76,6 +80,7 @@ object Form2: TForm2
         Items = <
           item
             Action = Action1
+            Caption = '&Start'
           end
           item
             Action = Action2

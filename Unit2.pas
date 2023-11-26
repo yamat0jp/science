@@ -14,7 +14,7 @@ type
   private
     FMoney, FData: Single;
   public
-    property Money : Single read FMoney write FMoney;
+    property Money: Single read FMoney write FMoney;
     property Data: Single read FData write FData;
   end;
 
@@ -44,7 +44,7 @@ type
     procedure sadness(var item: TItem);
     procedure event(cnt: integer);
     procedure getlist;
-    procedure getarray(ls: TList<TItem>; out data: TArray<Single>);
+    procedure getarray(ls: TList<TItem>; out Data: TArray<Single>);
     procedure hensaData(ls: TList<TItem>);
     procedure aboutSort(ls: TList<TItem>);
     procedure drawScreen;
@@ -57,7 +57,7 @@ implementation
 
 {$R *.dfm}
 
-uses System.Generics.Defaults, Math;
+uses System.Generics.Defaults, Math, System.Threading;
 
 const
   param = 2.0;
@@ -83,7 +83,7 @@ begin
   for var item in list do
     item.Money := RandG(50.0, 10.0);
   hensaData(list);
-  aboutsort(list);
+  aboutSort(list);
   for var item in list do
     item.Money := 50.0;
   getlist;
@@ -128,22 +128,23 @@ begin
 end;
 
 procedure TForm2.event(cnt: integer);
-var
-  item: TItem;
-  num: integer;
 begin
   Randomize;
   for var i := 1 to cnt do
-    for var j := 0 to list.Count - 1 do
-    begin
-      item := list[j];
-      num := Random(100);
-      if num > 70 then
-        happiness(item)
-      else if num > 40 then
-        sadness(item);
-      list[j] := item;
-    end;
+    TParallel.For(0, list.Count - 1,
+      procedure(j: integer)
+      var
+        item: TItem;
+        num: integer;
+      begin
+        item := list[j];
+        num := Random(100);
+        if num > 70 then
+          happiness(item)
+        else if num > 40 then
+          sadness(item);
+        list[j] := item;
+      end);
 end;
 
 procedure TForm2.FormCreate(Sender: TObject);
@@ -151,7 +152,7 @@ begin
   list := TList<TItem>.Create;
   for var i := 1 to 10000 do
     list.Add(TItem.Create);
-  Canvas.Pen.Width := 1;
+  Canvas.Pen.Width := 2;
   Action1Execute(Sender);
 end;
 
@@ -188,7 +189,7 @@ procedure TForm2.happiness(var item: TItem);
 var
   x: Single;
 begin
-  x := item.data / 50;
+  x := item.Data / 50;
   item.Money := item.Money * param * x;
   if item.Money > 1000 then
     item.Money := 1000;
@@ -196,14 +197,14 @@ end;
 
 procedure TForm2.hensaData(ls: TList<TItem>);
 var
-  data: TArray<Single>;
+  Data: TArray<Single>;
   mean, std: Single;
 begin
-  getarray(ls, data);
-  Math.MeanAndStdDev(data, mean, std);
-  Finalize(data);
+  getarray(ls, Data);
+  Math.MeanAndStdDev(Data, mean, std);
+  Finalize(Data);
   for var item in ls do
-    item.data := 10 * (item.Money - mean) / std + 50;
+    item.Data := 10 * (item.Money - mean) / std + 50;
 end;
 
 procedure TForm2.ListBox1Click(Sender: TObject);
@@ -217,24 +218,35 @@ procedure TForm2.ListBox2Click(Sender: TObject);
 begin
   drawScreen;
   Invalidate;
-  ListBox1.ItemIndex:=ListBox2.ItemIndex;
+  ListBox1.ItemIndex := ListBox2.ItemIndex;
 end;
 
-procedure TForm2.getarray(ls: TList<TItem>; out data: TArray<Single>);
+procedure TForm2.getarray(ls: TList<TItem>; out Data: TArray<Single>);
 begin
-  SetLength(data, ls.Count);
+  SetLength(Data, ls.Count);
   for var i := 0 to ls.Count - 1 do
-    data[i] := ls[i].Money;
+    Data[i] := ls[i].Money;
 end;
 
 procedure TForm2.getlist;
+var
+  ls1, ls2: TStringList;
 begin
   ListBox1.Items.Clear;
   ListBox2.Items.Clear;
-  for var i in list do
-  begin
-    ListBox1.Items.Add(i.Money.ToString);
-    ListBox2.Items.Add(i.data.ToString);
+  ls1 := TStringList.Create;
+  ls2 := TStringList.Create;
+  try
+    for var i in list do
+    begin
+      ls1.Add(i.Money.ToString);
+      ls2.Add(i.Data.ToString);
+    end;
+    ListBox1.Items.Assign(ls1);
+    ListBox2.Items.Assign(ls2);
+  finally
+    ls1.Free;
+    ls2.Free;
   end;
 end;
 
